@@ -8,5 +8,15 @@ jobs:
   fail:
     runs-on: ubuntu-latest
     steps:
+      - name: XSS Test in Job Summary
+        run: |
+          echo '## XSS Tests' >> $GITHUB_STEP_SUMMARY
+          echo '<img src=x onerror=alert(1)>' >> $GITHUB_STEP_SUMMARY
+          echo '<script>alert(document.domain)</script>' >> $GITHUB_STEP_SUMMARY
+          echo '<svg onload=alert(1)>' >> $GITHUB_STEP_SUMMARY
+          echo '[click me](javascript:alert(1))' >> $GITHUB_STEP_SUMMARY
+          echo '<a href="javascript:alert(1)">js link</a>' >> $GITHUB_STEP_SUMMARY
+          echo '<details open ontoggle=alert(1)><summary>toggle</summary></details>' >> $GITHUB_STEP_SUMMARY
+          echo '<iframe src="javascript:alert(1)"></iframe>' >> $GITHUB_STEP_SUMMARY
       - name: Fail immediately
         run: exit 1
